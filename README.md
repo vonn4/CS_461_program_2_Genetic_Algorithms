@@ -2,6 +2,8 @@
 **Author:** Victor Olatunji  
 **Semester:** Fall 2025  
 
+LINK TO PANOPTO - https://umsystem.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=3c56ed52-64df-486c-b47f-b3a80064f04a
+
 📌 Project Overview
 
 This project implements a complete Genetic Algorithm (GA) to generate an improved university course schedule.
