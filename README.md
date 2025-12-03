@@ -2,240 +2,158 @@
 **Author:** Victor Olatunji  
 **Semester:** Fall 2025  
 
----
+📌 Project Overview
 
-## 📌 Project Overview
+This project implements a complete Genetic Algorithm (GA) to generate an improved university course schedule.
+Each "chromosome" in the population represents a full schedule assigning:
 
-This project implements a **Genetic Algorithm (GA)** to automatically generate an optimized schedule for SLA-based course sections.  
-The GA evaluates each candidate schedule using several real-world constraints — including room sizes, facilitator preferences, time conflicts, building proximity, and workload balancing.
+Rooms
 
-Across hundreds of generations, the algorithm evolves increasingly optimal schedules through the application of:
+Time slots
 
-- **Softmax-based selection**  
-- **Single-point crossover**  
-- **Random mutation**  
-- **Comprehensive fitness scoring**  
-- **Evolution tracking and graphing**
+Facilitators
 
-The final result includes:
+for 11 SLA activities.
 
-1. The **best schedule found after 500 generations**  
-2. The **best fitness score achieved**  
-3. A generated **fitness plot** showing best/average/worst scores across generations  
+The GA follows all required steps:
 
----
+Representation of schedules
 
-## 🧠 How the Algorithm Works
+Custom fitness function with all rules implemented
 
-### **1. Phase 1 — Schedule Representation**
-Each schedule (chromosome) consists of assignments for all SLA classes:
+Softmax selection
 
-- `room`
-- `time`
-- `facilitator`
+Single-point crossover
 
-Schedules are stored as Python dictionaries.  
-The initial population contains **250 randomly generated schedules**, as required.
+Mutation operator
 
----
+Full evolutionary loop (500 generations)
 
-### **2. Phase 2 — Fitness Function**
+Fitness metrics tracking (best, average, worst, improvement %)
 
-The fitness function evaluates each schedule using several rules:
+Graph plotting (matplotlib)
 
-#### **Room Size Rules**
-- Penalizes under-capacity rooms  
-- Penalizes significantly oversized rooms  
-- Rewards rooms that closely match course enrollment  
+Clean final output and best schedule reporting
 
-#### **Facilitator Preference Rules**
-- Rewards preferred facilitators  
-- Slight reward for acceptable facilitators  
-- Penalizes unsuitable facilitators  
+The final GA produces a schedule with best fitness:
+🎯 9.20
 
-#### **Room Conflict Rules**
-- Penalizes any two classes scheduled in the same room at the same time  
+🧠 Key Features Implemented
+✔ Complete Fitness Function
 
-#### **Facilitator Load Rules**
-- Penalizes double-booked facilitators  
-- Penalizes facilitators teaching too many or too few courses  
-- Special exception: *Tyler* has a slightly modified underload rule  
+Includes:
 
-#### **SLA101 / SLA191 Special Rules**
-- SLA101A & SLA101B must not be at the same time  
-- SLA191A & SLA191B must not be at the same time  
-- Rewards appropriate spacing  
-- Rewards adjacency between SLA101 and SLA191 if buildings align  
-- Penalizes adjacency across far-apart buildings  
+Room size constraints
 
-Each of these rules contributes to the final fitness score.
+Facilitator preference scores
 
----
+Room conflict penalties
 
-## 🎯 Phase 3 — Selection (Softmax)
+Facilitator overload/underload logic
 
-Fitness values are converted to probabilities using SciPy’s **softmax** function.  
-This allows:
+Facilitator double-booking penalties
 
-- Higher-fitness schedules → more likely to be chosen  
-- Lower-fitness schedules → still possible to select (prevents premature convergence)
+Special SLA101/SLA191 sequencing rules
 
----
+Cross-rules for building location penalties and spacing rewards
 
-## 🔗 Phase 4 — Crossover
+✔ Softmax Selection
 
-The algorithm performs **single-point crossover**, combining two parent schedules into two children:
+The algorithm uses SciPy’s softmax to assign probabilistic selection weights:
 
-- First part from Parent A  
-- Second part from Parent B  
+Higher fitness → Higher probability of being selected as a parent.
 
-This encourages the mixing of strong traits between schedules.
+✔ Crossover and Mutation
 
----
+Single-point crossover using consistent ordering of activity keys
 
-## 🔄 Phase 5 — Mutation
+Mutation randomly reassigns room, time, facilitator
 
-A small percentage of schedules (10%) undergo mutation.  
-One activity is randomly reassigned:
+Adjustable mutation rate (default: 0.1)
 
-- a new room  
-- a new time  
-- and/or a new facilitator  
+✔ Evolution Loop (500 generations)
 
-Mutation ensures diversity and prevents stagnation.
+Each generation computes:
 
----
+Best fitness
 
-## 🚀 Phase 6 — Evolution Loop
+Average fitness
 
-The algorithm runs for **500 generations**, each time:
+Worst fitness
 
-1. Evaluating population fitness  
-2. Selecting parents  
-3. Producing new children  
-4. Applying crossover & mutation  
-5. Replacing the population  
-6. Tracking best/average/worst fitness  
+Generation-to-generation improvement %
 
-At the end, the best chromosome and fitness history are returned.
+All metrics stored in arrays for plotting and reporting.
 
----
+✔ Fitness Plot
 
-## 📊 Phase 6.3 — Fitness Plot
+A graph shows progression of:
 
-Using Matplotlib, the algorithm generates:
+Best fitness
 
+Average fitness
 
-The plot displays:
+Worst fitness
 
-- **Green** — Best fitness  
-- **Blue** — Average fitness  
-- **Red** — Worst fitness  
+Saved as:
 
-The graph visually demonstrates convergence toward an optimal schedule.
+final_fitness_plot.png
 
+📊 Final Performance Summary
 
-📊 Performance Metrics Collected Each Generation
+Best Fitness: 9.20
 
-This genetic algorithm tracks the following metrics, as required by the project specification:
+Average Fitness: 9.04
 
-1. Best Fitness
+Worst Fitness: 6.30
 
-The maximum fitness value within a generation — represents the strongest schedule found so far.
+Improvement % across evolution: Flattened near the final generations, indicating convergence.
 
-2. Average Fitness
+📁 Repository Structure
+/
+│ README.md
+│ final_fitness_plot.png
+│ schedule_ga.py        # main source code
+│ /screenshots          # optional screen captures
+│ /example_outputs      # best schedule, graph, logs
 
-The mean fitness across the entire population — indicates population health and diversity.
+▶️ How to Run
+Requirements
+Python 3.9+
+numpy
+scipy
+matplotlib
 
-3. Worst Fitness
 
-The lowest-performing schedule in the generation — useful for understanding algorithm spread.
+Install dependencies:
 
-4. Generation-to-Generation Improvement (%)
+pip install numpy scipy matplotlib
 
-Measures how much better the best schedule becomes from one generation to the next:
 
-Improvement
-=
-Best
-(
-𝑔
-)
-−
-Best
-(
-𝑔
-−
-1
-)
-∣
-Best
-(
-𝑔
-−
-1
-)
-∣
-+
-𝜖
-×
-100
-Improvement=
-∣Best(g−1)∣+ϵ
-Best(g)−Best(g−1)
-	​
+Run the GA:
 
-×100
+python schedule_ga.py
 
-This metric shows:
 
-Convergence rate
+Output includes:
 
-Whether evolution is stagnating
+Full final report
 
-Whether mutation/crossover is still producing new improvements
+Best schedule
 
-All four metrics appear:
+Metrics summary
 
-In the terminal output
+Saved plot
 
-Stored in history 
+✨ Citations
 
-Visualized in the fitness plot
+This project was completed with conceptual assistance from:
 
----
+ChatGPT (OpenAI, 2025)
+Used to help structure code, debug logic, and improve documentation clarity.
 
-## ▶ How to Run the Program
+The genetic algorithm principles adapted from standard GA references:
 
-### **Dependencies**
+Holland, J. (1992). Adaptation in Natural and Artificial Systems.
 
-Install required packages:
-
-### **Run the Full Program**
-
-
-This will:
-
-- Run the complete GA for 500 generations  
-- Print the final optimized schedule  
-- Save `final_fitness_plot.png`  
-
----
-
-## 📘 Citations & References
-
-This project draws concepts from:
-
-- **Whitley, Darrell (1994).** *A Genetic Algorithm Tutorial.*  
-- **Goldberg, David E. (1989).** *Genetic Algorithms in Search, Optimization, and Machine Learning.*  
-- **SciPy Documentation:** https://docs.scipy.org  
-- **NumPy Documentation:** https://numpy.org  
-- **Matplotlib Documentation:** https://matplotlib.org  
-
-### **AI Assistance Acknowledgment**
-Portions of this project’s debugging, structural organization, and explanation text were developed with assistance from **ChatGPT (OpenAI, GPT-5.1)**.  
-All algorithm logic, code design decisions, and final implementation were completed and reviewed by the author.
-
----
-
-## 🏁 End of README
+Goldberg, D. (1989). Genetic Algorithms in Search, Optimization & Machine Learning.
