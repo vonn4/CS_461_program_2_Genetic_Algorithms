@@ -134,6 +134,75 @@ The plot displays:
 
 The graph visually demonstrates convergence toward an optimal schedule.
 
+
+📊 Performance Metrics Collected Each Generation
+
+This genetic algorithm tracks the following metrics, as required by the project specification:
+
+1. Best Fitness
+
+The maximum fitness value within a generation — represents the strongest schedule found so far.
+
+2. Average Fitness
+
+The mean fitness across the entire population — indicates population health and diversity.
+
+3. Worst Fitness
+
+The lowest-performing schedule in the generation — useful for understanding algorithm spread.
+
+4. Generation-to-Generation Improvement (%)
+
+Measures how much better the best schedule becomes from one generation to the next:
+
+Improvement
+=
+Best
+(
+𝑔
+)
+−
+Best
+(
+𝑔
+−
+1
+)
+∣
+Best
+(
+𝑔
+−
+1
+)
+∣
++
+𝜖
+×
+100
+Improvement=
+∣Best(g−1)∣+ϵ
+Best(g)−Best(g−1)
+	​
+
+×100
+
+This metric shows:
+
+Convergence rate
+
+Whether evolution is stagnating
+
+Whether mutation/crossover is still producing new improvements
+
+All four metrics appear:
+
+In the terminal output
+
+Stored in history 
+
+Visualized in the fitness plot
+
 ---
 
 ## ▶ How to Run the Program
